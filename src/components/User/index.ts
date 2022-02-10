@@ -12,7 +12,7 @@ import { ValidationError } from '../../error/ValidationError';
  */
 async function findAll(req: Request, res: Response, next: NextFunction) {
     try {
-        const users = await UserService.findAll();
+        const users: object = await UserService.findAll();
         res.status(200).json({
             data: users,
         });
@@ -41,12 +41,12 @@ async function findById(req: Request, res: Response, next: NextFunction) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.findById(req.params.id);
+        const user: object | null = await UserService.findById(req.params.id);
 
         return res.status(200).json({
             data: user,
         });
-    } catch (error: any) {
+    } catch (error: any | ValidationError) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
                 error: error.name,
@@ -78,12 +78,12 @@ async function create(req: Request, res: Response, next: NextFunction) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.create(req.body);
+        const user: object = await UserService.create(req.body);
 
         return res.status(200).json({
             data: user,
         });
-    } catch (error: any) {
+    } catch (error: any | ValidationError) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
                 message: error.name,
@@ -115,12 +115,12 @@ async function updateById(req: Request, res: Response, next: NextFunction) {
             throw new ValidationError(error.details);
         }
 
-        const updatedUser = await UserService.updateById(req.body.id, req.body);
+        const updatedUser: object = await UserService.updateById(req.body.id, req.body);
 
         return res.status(200).json({
             data: updatedUser,
         });
-    } catch (error: any) {
+    } catch (error: any | ValidationError) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
                 message: error.name,
@@ -152,12 +152,12 @@ async function deleteById(req: Request, res: Response, next: NextFunction) {
             throw new ValidationError(error.details);
         }
 
-        const deletedUser = await UserService.deleteById(req.body.id);
+        const deletedUser: object = await UserService.deleteById(req.body.id);
 
         return res.status(200).json({
             data: deletedUser,
         });
-    } catch (error: any) {
+    } catch (error: any | ValidationError) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
                 message: error.name,
